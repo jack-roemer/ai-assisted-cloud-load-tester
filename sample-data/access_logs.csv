@@ -1,0 +1,16 @@
+timestamp,session_id,user_id,method,path,status_code,latency_ms
+2026-01-10T12:00:01Z,sess_001,user_101,GET,/products,200,34
+2026-01-10T12:00:05Z,sess_001,user_101,GET,/products/1,200,41
+2026-01-10T12:00:15Z,sess_001,user_101,POST,/cart,201,78
+2026-01-10T12:00:40Z,sess_001,user_101,POST,/checkout,200,260
+2026-01-10T12:01:02Z,sess_002,user_202,GET,/products,200,38
+2026-01-10T12:01:22Z,sess_002,user_202,GET,/products/2,200,45
+2026-01-10T12:02:10Z,sess_003,user_303,GET,/products,200,31
+2026-01-10T12:02:11Z,sess_003,user_303,GET,/products,200,30
+2026-01-10T12:02:12Z,sess_003,user_303,GET,/products/999,404,12
+2026-01-10T12:02:13Z,sess_003,user_303,POST,/checkout,400,24
+2026-01-10T12:03:00Z,sess_004,user_404,GET,/products,200,36
+2026-01-10T12:03:25Z,sess_004,user_404,GET,/products/3,200,43
+2026-01-10T12:04:05Z,sess_004,user_404,GET,/products/4,200,44
+2026-01-10T12:04:50Z,sess_004,user_404,POST,/cart,201,82
+2026-01-10T12:05:30Z,sess_004,user_404,POST,/checkout,200,284
