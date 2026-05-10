@@ -1,6 +1,5 @@
 import typer
 
-
 app = typer.Typer(help="load-tester load testing toolkit.")
 
 

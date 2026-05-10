@@ -4,8 +4,7 @@ from typing import Annotated
 
 from fastapi import Depends
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase
-
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 DATABASE_PATH = Path("demo.db")
 DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
@@ -13,7 +12,9 @@ DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
 
 engine = create_engine(
     DATABASE_URL,
-    # in fastapi a single request can use different threads or multiple concurrent requests may need to access the database at the same time, so we disable the check for same thread in sqlite
+    # in fastapi a single request can use different threads or multiple
+    # concurrent requests may need to access the database at the same time,
+    # so we disable the check for same thread in sqlite
     connect_args={"check_same_thread": False},
 )
 

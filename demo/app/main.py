@@ -1,13 +1,19 @@
+import time
 from collections.abc import Generator
 from contextlib import asynccontextmanager, contextmanager
-import time
 
 from fastapi import FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 
-from demo.app.database import Base, SessionLocal, engine, get_db, DBSessionDependency
+from demo.app.database import Base, DBSessionDependency, SessionLocal, engine
 from demo.app.models import CartItemModel, OrderModel, ProductModel
-from demo.app.schemas import *
+from demo.app.schemas import (
+    CartItemCreateSchema,
+    CartItemSchema,
+    OrderCreateSchema,
+    OrderSchema,
+    ProductSchema,
+)
 
 
 @contextmanager
@@ -37,7 +43,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Load Tester Demo Store API",
-    description="A simple API for a demo online store to be used as a target system for load testing.",
+    description="A simple API for a demo online store to be used as a target system "
+    "for load testing.",
     version="1.0.0",
     lifespan=lifespan,
 )
