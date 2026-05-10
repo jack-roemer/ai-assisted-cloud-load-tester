@@ -22,8 +22,11 @@ WORKDIR /app
 
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
+COPY --from=builder /install /usr/local
 COPY src ./src
 COPY demo ./demo
+
+RUN chown -R appuser:appgroup /app
 
 USER appuser
 
