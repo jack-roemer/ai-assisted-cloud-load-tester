@@ -14,6 +14,7 @@ class ProductModel(Base):
     price: Mapped[float] = mapped_column(Float, nullable=False)
     inventory: Mapped[int] = mapped_column(Integer, nullable=False)
 
+
 class CartItemModel(Base):
     """An item in a user's shopping cart."""
 
@@ -23,6 +24,7 @@ class CartItemModel(Base):
     session_id: Mapped[str] = mapped_column(String, index=True, nullable=False)
     product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
     quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
 
 class OrderModel(Base):
     """An order placed by a user."""

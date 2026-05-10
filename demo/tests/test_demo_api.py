@@ -14,13 +14,13 @@ def test_db_path():
     """Create a temporary database file for testing."""
     temp_dir = tempfile.gettempdir()
     db_path = Path(temp_dir) / "test_demo.db"
-    
+
     # Clean up any existing test database
     if db_path.exists():
         db_path.unlink()
-    
+
     yield str(db_path)
-    
+
     # Clean up after tests (don't fail if file is locked)
     try:
         if db_path.exists():
@@ -34,15 +34,15 @@ def test_engine(test_db_path):
     """Create a test database engine."""
     engine = create_engine(f"sqlite:///{test_db_path}")
     Base.metadata.create_all(bind=engine)
-    
+
     # Seed products once
     SessionLocal = sessionmaker(bind=engine)
     db = SessionLocal()
     seed_products(db)
     db.close()
-    
+
     yield engine
-    
+
     # Clean up engine connections
     engine.dispose()
 
@@ -50,6 +50,7 @@ def test_engine(test_db_path):
 @pytest.fixture
 def client(test_engine):
     """Create a test client with overridden database dependency."""
+
     def override_get_db():
         SessionLocal = sessionmaker(bind=test_engine)
         db = SessionLocal()
@@ -57,11 +58,11 @@ def client(test_engine):
             yield db
         finally:
             db.close()
-    
+
     app.dependency_overrides[get_db] = override_get_db
-    
+
     yield TestClient(app)
-    
+
     app.dependency_overrides.clear()
 
 
@@ -71,11 +72,13 @@ def test_health_endpoint(client) -> None:
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
 
+
 def test_products_endpoint_returns_products(client) -> None:
     response = client.get("/products")
 
     assert response.status_code == 200
     assert len(response.json()) >= 1
+
 
 def test_cart_and_checkout_flow(client) -> None:
     cart_response = client.post(

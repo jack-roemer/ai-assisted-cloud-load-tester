@@ -8,6 +8,7 @@ app = typer.Typer(help="load-tester load testing toolkit.")
 def version() -> None:
     typer.echo("load-tester 1.0.0")
 
+
 @app.command()
 def doctor() -> None:
     typer.echo("load-tester CLI is ready.")

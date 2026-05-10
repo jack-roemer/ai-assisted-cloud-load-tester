@@ -9,6 +9,7 @@ from demo.app.database import Base, SessionLocal, engine, get_db, DBSessionDepen
 from demo.app.models import CartItemModel, OrderModel, ProductModel
 from demo.app.schemas import *
 
+
 @contextmanager
 def db_session() -> Generator[Session, None, None]:
     """Context manager for database sessions."""
@@ -20,6 +21,7 @@ def db_session() -> Generator[Session, None, None]:
 
     finally:
         db.close()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -63,13 +65,15 @@ def seed_products(db: Session) -> None:
 def health() -> dict[str, str]:
     """Returns API health status."""
 
-    return { "status": "ok" }
+    return {"status": "ok"}
+
 
 @app.get("/products", response_model=list[ProductSchema])
 def get_products(db: DBSessionDependency) -> list[ProductModel]:
     """Gets all products."""
 
     return db.query(ProductModel).all()
+
 
 @app.get("/products/{product_id}", response_model=ProductSchema)
 def get_product(product_id: int, db: DBSessionDependency) -> ProductModel:
@@ -87,10 +91,14 @@ def get_product(product_id: int, db: DBSessionDependency) -> ProductModel:
 
 
 @app.post("/cart", response_model=CartItemSchema, status_code=status.HTTP_201_CREATED)
-def create_cart_item(cart_item: CartItemCreateSchema, db: DBSessionDependency) -> CartItemModel:
+def create_cart_item(
+    cart_item: CartItemCreateSchema, db: DBSessionDependency
+) -> CartItemModel:
     """Add an item to a user's cart."""
 
-    product = db.query(ProductModel).filter(ProductModel.id == cart_item.product_id).first()
+    product = (
+        db.query(ProductModel).filter(ProductModel.id == cart_item.product_id).first()
+    )
 
     if product is None:
         raise HTTPException(
@@ -116,6 +124,7 @@ def create_cart_item(cart_item: CartItemCreateSchema, db: DBSessionDependency) -
 
     return cart_item
 
+
 @app.post("/checkout", response_model=OrderSchema, status_code=status.HTTP_201_CREATED)
 def checkout(request: OrderCreateSchema, db: DBSessionDependency) -> OrderSchema:
     """
@@ -127,7 +136,11 @@ def checkout(request: OrderCreateSchema, db: DBSessionDependency) -> OrderSchema
 
     time.sleep(0.25)
 
-    cart_items = (db.query(CartItemModel).filter(CartItemModel.session_id == request.session_id).all())
+    cart_items = (
+        db.query(CartItemModel)
+        .filter(CartItemModel.session_id == request.session_id)
+        .all()
+    )
 
     if not cart_items:
         raise HTTPException(
@@ -138,7 +151,9 @@ def checkout(request: OrderCreateSchema, db: DBSessionDependency) -> OrderSchema
     total_price = 0.0
 
     for item in cart_items:
-        product = db.query(ProductModel).filter(ProductModel.id == item.product_id).first()
+        product = (
+            db.query(ProductModel).filter(ProductModel.id == item.product_id).first()
+        )
 
         if product is None:
             continue

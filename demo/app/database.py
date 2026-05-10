@@ -14,7 +14,7 @@ DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
 engine = create_engine(
     DATABASE_URL,
     # in fastapi a single request can use different threads or multiple concurrent requests may need to access the database at the same time, so we disable the check for same thread in sqlite
-    connect_args={"check_same_thread": False}, 
+    connect_args={"check_same_thread": False},
 )
 
 SessionLocal = sessionmaker(
